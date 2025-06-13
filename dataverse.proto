@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+service Greeter {
+  rpc Upload (stream ImageUploadRequest) returns (ImageUploadResponse) {};
+  rpc Search (SearchRequest) returns (SearchResponse){};
+  rpc Config (ConfigRequest) returns (ConfigResponse){};
+  rpc Relocate (RelocateRequest) returns (RelocateResponse){};
+}
+
+enum ImageUploadStatusCode {
+  Ok = 0;
+  Failed = 1;
+  Unknown = 2;
+  InProgress = 3;
+}
+
+message RelocateRequest{
+  bytes Content = 1;
+  string Filename = 2;
+  string Username = 3;
+}
+
+message RelocateResponse{
+  string status = 1;
+}
+
+message ImageUploadRequest {
+  bytes Content = 1;
+  string Id = 2;
+  ImageUploadStatusCode StatusCode = 3;
+  string Username = 4;
+}
+
+message ImageUploadResponse {
+  string Id = 1;
+  ImageUploadStatusCode StatusCode = 2;
+  string Message = 3;
+  string Username = 4;
+  repeated string nodeConnections = 5;
+}
+
+message SearchRequest {
+  string Filename = 1;
+  string Username = 2;
+}
+
+message SearchResponse {
+  string found = 1;
+  repeated string nodeConnections = 2;
+  bytes Content = 3;
+  string File = 4;
+}
+
+message ConfigRequest {
+  string Server = 1;
+}
+
+message ConfigResponse {
+  string Status = 1;
+}
